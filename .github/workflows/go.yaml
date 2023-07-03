@@ -22,7 +22,7 @@ jobs:
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: pwd123
-          POSTGRES_DB: bank
+          POSTGRES_DB: solvery
         ports:
           - 5432:5432
         options: >-

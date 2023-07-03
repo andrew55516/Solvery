@@ -2,10 +2,13 @@ package api
 
 import (
 	db "Solvery/db/sqlc"
+	"Solvery/util"
 	"database/sql"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
+	"log"
 	"net/http"
 )
 
@@ -133,6 +136,17 @@ func (s *Server) updateUserCredit(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
+	}
+
+	if err := util.SendEmail(
+		s.config.EmailAddress,
+		s.config.EmailPassword,
+		req.Email,
+		updateCreditComment,
+		fmt.Sprintf("your credit has been updated from %d to %d",
+			user.Credit, res.User.Credit),
+	); err != nil {
+		log.Printf("error sending email: %v", err)
 	}
 
 	c.JSON(http.StatusOK, res)

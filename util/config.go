@@ -7,6 +7,8 @@ type Config struct {
 	DBSource      string `mapstructure:"DB_SOURCE"`
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
 	MinCredit     int32  `mapstructure:"MIN_CREDIT"`
+	EmailAddress  string `mapstructure:"EMAIL_ADDRESS"`
+	EmailPassword string `mapstructure:"EMAIL_PASSWORD"`
 }
 
 func LoadConfig(path string) (config Config, err error) {

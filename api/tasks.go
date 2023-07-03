@@ -2,11 +2,13 @@ package api
 
 import (
 	db "Solvery/db/sqlc"
+	"Solvery/util"
 	"Solvery/util/tasks/task1"
 	"database/sql"
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -42,6 +44,18 @@ func (s *Server) task1(c *gin.Context) {
 	cost := int32(len(req.Array))
 
 	if user.Credit-cost < s.config.MinCredit {
+		if err := util.SendEmail(
+			s.config.EmailAddress,
+			s.config.EmailPassword,
+			req.Email,
+			task1Comment,
+			fmt.Sprintf("sorry, you have no enough credit\nyour credit: %d, task1 costs: %d",
+				user.Credit,
+				len(req.Array)),
+		); err != nil {
+			log.Printf("error sending email: %v", err)
+		}
+
 		c.JSON(http.StatusBadRequest, errorResponse(errors.New(lowCredit)))
 		return
 	}
@@ -64,7 +78,19 @@ func (s *Server) task1(c *gin.Context) {
 		Entry:  res.Entry,
 	}
 
-	//TODO: send email
+	if err := util.SendEmail(
+		s.config.EmailAddress,
+		s.config.EmailPassword,
+		req.Email,
+		task1Comment,
+		fmt.Sprintf("%s, input: %v \nresult: %v \nyour credit: %v",
+			task1Comment,
+			req.Array,
+			resp.Result,
+			resp.User.Credit,
+		)); err != nil {
+		log.Printf("error sending email: %v", err)
+	}
 
 	c.JSON(http.StatusOK, resp)
 }

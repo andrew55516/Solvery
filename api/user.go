@@ -50,7 +50,7 @@ func (s *Server) createUser(c *gin.Context) {
 		if pqErr, ok := err.(*pq.Error); ok {
 			switch pqErr.Code.Name() {
 			case "unique_violation":
-				c.JSON(http.StatusForbidden, errorResponse(err))
+				c.JSON(http.StatusBadRequest, errorResponse(err))
 				return
 			}
 		}

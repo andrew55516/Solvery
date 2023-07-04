@@ -7,6 +7,7 @@ services:
             - POSTGRES_USER=root
             - POSTGRES_PASSWORD=pwd123
             - POSTGRES_DB=solvery
+        restart: on-failure
     api:
         build:
             context: .
@@ -17,5 +18,6 @@ services:
             - DB_SOURCE=postgresql://root:pwd123@postgres_solvery:5432/solvery?sslmode=disable
         depends_on:
             - postgres
+        restart: on-failure
 #        entrypoint: [ "/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh" ]
 #        command: [ "/app/main" ]

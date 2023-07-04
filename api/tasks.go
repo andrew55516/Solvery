@@ -14,7 +14,7 @@ import (
 
 type task1Request struct {
 	Email string `json:"email" binding:"required,email"`
-	Array []int  `json:"array" binding:"required,task1Comment"`
+	Array []int  `json:"array" binding:"required,task1"`
 }
 
 type task1Response struct {

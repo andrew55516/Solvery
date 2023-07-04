@@ -11,6 +11,7 @@ import (
 
 func newTestServer(t *testing.T, store db.Store) *Server {
 	config := util.Config{
+		MinCredit: -1000,
 		//EmailAddress:  "solvery55516@gmail.com",
 		//EmailPassword: "vxqmyxvrsdutduzk",
 	}

@@ -286,7 +286,7 @@ func TestListUsersApi(t *testing.T) {
 			pageId:   0,
 			pageSize: 5,
 			buildStubs: func(store *mockdb.MockStore) {
-				store.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Times(0).Return([]db.User{}, sql.ErrNoRows)
+				store.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Times(0)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusBadRequest, recorder.Code)
@@ -297,7 +297,7 @@ func TestListUsersApi(t *testing.T) {
 			pageId:   1,
 			pageSize: 0,
 			buildStubs: func(store *mockdb.MockStore) {
-				store.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Times(0).Return([]db.User{}, sql.ErrNoRows)
+				store.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Times(0)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusBadRequest, recorder.Code)

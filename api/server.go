@@ -21,7 +21,7 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 	}
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		v.RegisterValidation("task1Comment", validTask1Input)
+		v.RegisterValidation("task1", validTask1Input)
 	}
 
 	server.setupRouter()

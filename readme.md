@@ -27,6 +27,8 @@ ___
 ___
 You can import postman [collection](https://github.com/andrew55516/Solvery/tree/postman/postman/collections) to test API
 
+You can learn API with [swagger](https://app.swaggerhub.com/apis/ANDREYAKSENOV/Solvery55516/1.0.0)
+
 ## Start
 ___
 Download the repository and run following command to run app with docker-compose:

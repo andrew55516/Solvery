@@ -1,0 +1,426 @@
+---
+openapi: 3.0.3
+info:
+  title: Solvery - OpenAPI 3.0
+  description: |-
+    Some useful links:
+      - [The Solvery repository](https://github.com/andrew55516/Solvery)
+  contact:
+    email: aksenovandrey4@gmail.com
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/ANDREYAKSENOV/Solvery55516/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:8080
+tags:
+- name: Solvery
+  description: Solve tasks for credits
+paths:
+  /users:
+    get:
+      tags:
+      - Users
+      summary: List users
+      description: Get all users
+      parameters:
+      - name: page_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+      - name: page_size
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          maximum: 10
+          minimum: 5
+          type: integer
+          example: 5
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+    post:
+      tags:
+      - Users
+      summary: Create new user
+      description: Create user uniq by email
+      requestBody:
+        content:
+          applicatioin/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserReq'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+  /users/{email}:
+    get:
+      tags:
+      - Users
+      summary: Get user
+      description: Get user by email
+      parameters:
+      - name: email
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: test@example.com
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg404'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+  /users/update:
+    post:
+      tags:
+      - Users
+      summary: Update user balance
+      description: Add "amount" to user balance
+      requestBody:
+        content:
+          applicatioin/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserReq'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResult'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg404'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+  /users/entries:
+    get:
+      tags:
+      - Entries
+      summary: List users entries
+      parameters:
+      - name: email
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: test@example.com
+      - name: page_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+      - name: page_size
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          maximum: 10
+          minimum: 5
+          type: integer
+          example: 5
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/entry'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+  /entries:
+    get:
+      tags:
+      - Entries
+      summary: List all entries
+      parameters:
+      - name: page_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          minimum: 1
+          type: integer
+          example: 1
+      - name: page_size
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          maximum: 10
+          minimum: 5
+          type: integer
+          example: 5
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/entry'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+  /task1:
+    post:
+      tags:
+      - Tasks
+      summary: Solve task1
+      description: "Provided solution for task1 if user has enough credit\n\nTask1:\nДан неотсортированный массив из N чисел от 1 до N,\nпри этом несколько чисел из диапазона [1, N] пропущено, \nа некоторые присутствуют дважды.\n\nНайти все пропущенные числа."
+      requestBody:
+        content:
+          applicatioin/json:
+            schema:
+              $ref: '#/components/schemas/Task1Req'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg400'
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg404'
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msg500'
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Вася Пупкин
+        class:
+          type: string
+          example: А-02
+        email:
+          type: string
+          example: test@example.com
+        credit:
+          type: integer
+          example: 0
+        created_at:
+          type: string
+          example: 2023-07-04T16:31:11.606864Z
+    entry:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_email:
+          type: string
+          example: test@example.com
+        amount:
+          type: integer
+          example: -10
+        comment:
+          type: string
+          example: "task1, input: [1 1 2 2 2 10 5 3 8 3]"
+        created_at:
+          type: string
+          example: 2023-07-04T16:31:11.606864Z
+    PaymentResult:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+        entry:
+          $ref: '#/components/schemas/entry'
+    UpdateUserReq:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@example.com
+        amount:
+          type: integer
+          example: 100
+    CreateUserReq:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Вася Пупкин
+        class:
+          type: string
+          example: А-02
+        email:
+          type: string
+          example: test@example.com
+    Task1Req:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@example.com
+        array:
+          type: array
+          example:
+          - 1
+          - 1
+          - 2
+          - 2
+          - 2
+          - 10
+          - 5
+          - 3
+          - 8
+          - 3
+          items:
+            type: integer
+    msg400:
+      properties:
+        error:
+          type: string
+          example: bad request
+    msg404:
+      properties:
+        error:
+          type: string
+          example: not found
+    msg500:
+      properties:
+        error:
+          type: string
+          example: internal error
+    inline_response_200:
+      properties:
+        result:
+          type: array
+          example:
+          - 4
+          - 6
+          - 7
+          - 9
+          items:
+            type: integer
+        user:
+          $ref: '#/components/schemas/user'
+        entry:
+          $ref: '#/components/schemas/entry'

@@ -25,4 +25,7 @@ mock:
 server:
 	go run cmd/main.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test mock server
+dockerserver:
+	docker-compose up
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test mock gocontainer dockerserver server
